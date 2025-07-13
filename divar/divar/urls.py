@@ -17,7 +17,17 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from debug_toolbar.toolbar import debug_toolbar_urls
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
+from django.urls import include
+from authentication.views import CreateAPIView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/', include([
+        path('users/', TokenObtainPairView.as_view(), name='user_create'),
+        path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    ]))
 ]+debug_toolbar_urls()
